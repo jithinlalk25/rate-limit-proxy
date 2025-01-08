@@ -3,11 +3,20 @@ import express, { Request, Response, NextFunction } from "express";
 import path from "path";
 import cookieParser from "cookie-parser";
 import logger from "morgan";
+import mongoose from "mongoose";
 
 import indexRouter from "./routes/index";
 import usersRouter from "./routes/users";
+import appsRouter from "./routes/apps";
+import proxyRouter from "./routes/proxy";
 
 const app = express();
+
+// MongoDB connection
+mongoose
+  .connect("mongodb://localhost:27017/rate-limit-proxy")
+  .then(() => console.log("Connected to MongoDB"))
+  .catch((err) => console.error("MongoDB connection error:", err));
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
@@ -21,6 +30,8 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
+app.use("/apps", appsRouter);
+app.use("/", proxyRouter);
 
 // catch 404 and forward to error handler
 app.use((req: Request, res: Response, next: NextFunction) => {
