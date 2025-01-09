@@ -13,6 +13,7 @@ export interface IUser extends Document {
   userId: string;
   encryptedApiKey: string;
   createdAt: Date;
+  updatedAt: Date;
   compareApiKey(candidateApiKey: string): boolean;
 }
 
@@ -20,22 +21,26 @@ interface IUserModel extends Model<IUser> {
   encryptApiKey(apiKey: string): string;
 }
 
-const UserSchema: Schema = new Schema({
-  userId: {
-    type: String,
-    required: true,
-    unique: true,
-    match: /^[a-zA-Z0-9]+$/, // Alphanumeric validation
+const UserSchema: Schema = new Schema(
+  {
+    userId: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    encryptedApiKey: {
+      type: String,
+      required: true,
+    },
   },
-  encryptedApiKey: {
-    type: String,
-    required: true,
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
-});
+  {
+    versionKey: false,
+    timestamps: true,
+  }
+);
+
+// Add after the Schema definition
+UserSchema.index({ userId: 1 }, { unique: true });
 
 // Static method to encrypt API key
 UserSchema.statics.encryptApiKey = function (apiKey: string): string {

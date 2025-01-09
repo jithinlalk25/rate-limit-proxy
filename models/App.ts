@@ -22,31 +22,34 @@ export interface IApp extends Document {
   config: RateLimitConfig;
   userId: mongoose.Types.ObjectId;
   createdAt: Date;
+  updatedAt: Date;
 }
 
-const AppSchema: Schema = new Schema({
-  baseUrl: {
-    type: String,
-    required: true,
+const AppSchema: Schema = new Schema(
+  {
+    baseUrl: {
+      type: String,
+      required: true,
+    },
+    strategy: {
+      type: String,
+      enum: Object.values(Strategy),
+      required: true,
+    },
+    config: {
+      type: Schema.Types.Mixed,
+      required: true,
+    },
+    userId: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
   },
-  strategy: {
-    type: String,
-    enum: Object.values(Strategy),
-    required: true,
-  },
-  config: {
-    type: Schema.Types.Mixed,
-    required: true,
-  },
-  userId: {
-    type: Schema.Types.ObjectId,
-    ref: "User",
-    required: true,
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
-});
+  {
+    versionKey: false,
+    timestamps: true,
+  }
+);
 
 export default mongoose.model<IApp>("App", AppSchema);

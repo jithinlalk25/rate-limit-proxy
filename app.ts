@@ -1,3 +1,6 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 import createError from "http-errors";
 import express, { Request, Response, NextFunction } from "express";
 import path from "path";
@@ -18,10 +21,6 @@ mongoose
   )
   .then(() => console.log("Connected to MongoDB"))
   .catch((err) => console.error("MongoDB connection error:", err));
-
-// view engine setup
-app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "jade");
 
 app.use(logger("dev"));
 app.use(express.json());
