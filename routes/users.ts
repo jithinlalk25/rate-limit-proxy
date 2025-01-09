@@ -1,13 +1,8 @@
-import express, { Request, Response, RequestHandler } from "express";
+import express, { RequestHandler } from "express";
 import User from "../models/User";
 import crypto from "crypto";
 
 const router = express.Router();
-
-/* GET users listing. */
-const getUsers: RequestHandler = (req, res) => {
-  res.send("respond with a resource");
-};
 
 /* Register new user */
 const registerUser: RequestHandler = async (req, res) => {
@@ -49,7 +44,6 @@ const registerUser: RequestHandler = async (req, res) => {
   }
 };
 
-router.get("/", getUsers);
 router.post("/register", registerUser);
 
 export default router;

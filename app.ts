@@ -5,7 +5,6 @@ import cookieParser from "cookie-parser";
 import logger from "morgan";
 import mongoose from "mongoose";
 
-import indexRouter from "./routes/index";
 import usersRouter from "./routes/users";
 import appsRouter from "./routes/apps";
 import proxyRouter from "./routes/proxy";
@@ -14,7 +13,9 @@ const app = express();
 
 // MongoDB connection
 mongoose
-  .connect("mongodb://localhost:27017/rate-limit-proxy")
+  .connect(
+    process.env.MONGODB_URI || "mongodb://localhost:27017/rate-limit-proxy"
+  )
   .then(() => console.log("Connected to MongoDB"))
   .catch((err) => console.error("MongoDB connection error:", err));
 
@@ -28,7 +29,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/apps", appsRouter);
 app.use("/", proxyRouter);
