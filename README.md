@@ -14,14 +14,14 @@ A robust API rate limiting proxy service built with Node.js, Express, and TypeSc
 
 - Node.js (v14 or higher)
 - MongoDB (v4.4 or higher)
-- npm or yarn
+- npm
 
 ## Setup Instructions
 
 1. Clone the repository:
 
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/jithinlalk25/rate-limit-proxy.git
    cd rate-limit-proxy
    ```
 
@@ -51,20 +51,6 @@ A robust API rate limiting proxy service built with Node.js, Express, and TypeSc
 
 The server will start on `http://localhost:3000` by default.
 
-## Rate Limiting Strategy
-
-The service implements a token bucket algorithm for rate limiting with the following characteristics:
-
-- Each application has its own rate limit configuration
-- Rate limits are defined by:
-  - Requests per time window
-  - Time window duration
-- Limits are enforced across all endpoints for each application
-- Rate limit information is included in response headers:
-  - `X-RateLimit-Limit`: Maximum requests allowed in the window
-  - `X-RateLimit-Remaining`: Remaining requests in current window
-  - `X-RateLimit-Reset`: Time when the rate limit will reset
-
 ## API Documentation
 
 For detailed API documentation, please visit our [Postman Collection](https://documenter.getpostman.com/view/your-collection-id).
@@ -81,30 +67,4 @@ Create a `.env` file in the root directory with the following variables:
 
 - `PORT` - Server port (default: 3000)
 - `MONGODB_URI` - MongoDB connection string (default: mongodb://localhost:27017/rate-limit-proxy)
-- `JWT_SECRET` - Secret key for JWT token generation
-- `JWT_EXPIRATION` - JWT token expiration time (e.g., '24h')
-- `DEFAULT_RATE_LIMIT` - Default number of requests allowed per window (optional)
-- `DEFAULT_RATE_WINDOW` - Default time window in seconds for rate limiting (optional)
-
-Example `.env` file:
-
-```env
-PORT=3000
-MONGODB_URI=mongodb://localhost:27017/rate-limit-proxy
-JWT_SECRET=your_jwt_secret_key
-JWT_EXPIRATION=24h
-DEFAULT_RATE_LIMIT=100
-DEFAULT_RATE_WINDOW=3600
-```
-
-## Contributing
-
-1. Fork the repository
-2. Create your feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a new Pull Request
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
+- `ENCRYPTION_KEY` - Encryption key for API keys (default: YCTi9Usas6MQ+5PJFJQN97jDLU7bdESjq1awp/pR+I0=)
