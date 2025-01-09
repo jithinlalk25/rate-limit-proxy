@@ -1,15 +1,25 @@
 import mongoose, { Schema, Document } from "mongoose";
 
 export enum Strategy {
-  SLIDING_WINDOW = "sliding_window",
   FIXED_WINDOW = "fixed_window",
-  TOKEN_BUCKET = "token_bucket",
+  SLIDING_WINDOW = "sliding_window",
 }
+
+interface BaseRateLimitConfig {
+  requests: number; // Maximum number of requests allowed
+  window: number; // Time window in seconds
+}
+
+interface FixedWindowConfig extends BaseRateLimitConfig {}
+
+interface SlidingWindowConfig extends BaseRateLimitConfig {}
+
+export type RateLimitConfig = FixedWindowConfig | SlidingWindowConfig;
 
 export interface IApp extends Document {
   baseUrl: string;
   strategy: Strategy;
-  config: any;
+  config: RateLimitConfig;
   userId: mongoose.Types.ObjectId;
   createdAt: Date;
 }
@@ -18,7 +28,6 @@ const AppSchema: Schema = new Schema({
   baseUrl: {
     type: String,
     required: true,
-    unique: true,
   },
   strategy: {
     type: String,

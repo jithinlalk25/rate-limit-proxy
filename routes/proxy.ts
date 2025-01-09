@@ -3,6 +3,7 @@ import axios from "axios";
 import App from "../models/App";
 import User, { IUser } from "../models/User";
 import { Types, Document } from "mongoose";
+import { RateLimiter } from "../services/RateLimiter";
 
 // Extend Request type to include user
 interface AuthenticatedRequest extends Request {
@@ -64,6 +65,17 @@ router.all("/apis/:appId/*", async (req: Request, res: Response) => {
       return res
         .status(403)
         .json({ error: "Not authorized to access this app" });
+    }
+
+    // Check rate limit
+    const isAllowed = await RateLimiter.isAllowed(
+      appId,
+      app.strategy,
+      app.config
+    );
+
+    if (!isAllowed) {
+      return res.status(429).json({ error: "Rate limit exceeded" });
     }
 
     // Prepare the forwarded request
