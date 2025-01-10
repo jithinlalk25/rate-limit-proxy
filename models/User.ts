@@ -26,7 +26,6 @@ const UserSchema: Schema = new Schema(
     userId: {
       type: String,
       required: true,
-      unique: true,
     },
     encryptedApiKey: {
       type: String,
